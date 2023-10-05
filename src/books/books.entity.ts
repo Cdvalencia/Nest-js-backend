@@ -18,7 +18,7 @@ export class Books {
   amount: number;
   
   @Column()
-  publication_date: string;
+  publication_date: Date;
   
   @Column()
   isbn: string;

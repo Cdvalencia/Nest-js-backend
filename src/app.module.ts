@@ -3,18 +3,27 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BooksModule } from './books/books.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
+import { User } from './user.entity';
+import {JwtModule} from "@nestjs/jwt";
 @Module({
-  imports: [TypeOrmModule.forRoot({
-  type: 'mysql',
-  host: 'localhost',
-  port: 3306,
-  username: 'root',
-  password: '',
-  database: 'libreria',
-  entities: [__dirname + '/**/*.entity{.ts,.js}'],
-  synchronize: true, // Solo para desarrollo, desactivar en producción
-}),BooksModule],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: '',
+      database: 'libreria',
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: true, // Solo para desarrollo, desactivar en producción
+    }),
+    BooksModule,
+    TypeOrmModule.forFeature([User]),
+    JwtModule.register({
+      secret: 'secret',
+      signOptions: {expiresIn: '1d'}
+    })
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
