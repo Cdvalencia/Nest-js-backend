@@ -53,7 +53,7 @@ export class AuthController {
 
         const jwt = await this.jwtService.signAsync({id: user.id});        
         
-        response.cookie('jwt', jwt, {sameSite: 'None', httpOnly: true});
+        response.cookie('jwt', jwt, {domain: "https://main.d1j29lgo6wvoj3.amplifyapp.com" ,httpOnly: true});
 
         return {
             success: true
