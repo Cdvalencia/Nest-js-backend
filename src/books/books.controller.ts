@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Post, Put, Delete, Param, Body, Query } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, HttpException, HttpStatus } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { Books } from './books.entity';
-
+import { validate } from 'class-validator';
 @Controller('books')
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
@@ -18,13 +18,30 @@ export class BooksController {
   } 
 
   @Post()
-  create(@Body() book: Books): Promise<Books> {    
-    return this.booksService.create(book);
+  async create(
+    @Body() bookData: Books    
+  ): Promise<Books> {  
+
+    const book = Object.assign(new Books(), bookData);    
+    
+    const errors = await validate(book);
+    if (errors.length > 0) {      
+      throw new HttpException({ message: 'Hay campos que están vacios.', errors }, HttpStatus.BAD_REQUEST);
+    }
+   
+    return this.booksService.create(bookData);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() book: Books): Promise<Books> {
-    return this.booksService.update(+id, book);
+  async update(@Param('id') id: string, @Body() bookData: Books): Promise<Books> {
+    const book = Object.assign(new Books(), bookData);    
+    
+    const errors = await validate(book);
+    if (errors.length > 0) {      
+      throw new HttpException({ message: 'Hay campos que están vacios.', errors }, HttpStatus.BAD_REQUEST);
+    }
+   
+    return this.booksService.update(+id, bookData);
   }
 
   @Delete(':id')
