@@ -53,17 +53,21 @@ export class AuthController {
 
         const jwt = await this.jwtService.signAsync({id: user.id});        
         
+        // elastic beanstalk no soporta la creacion de la cookie 
         response.cookie('jwt', jwt, {domain: "https://main.d1j29lgo6wvoj3.amplifyapp.com" ,httpOnly: true});
 
         return {
-            success: true
+            jwt: jwt
         };
     }
 
     @Get('user')
-    async user(@Req() request: Request) {
+    async user(@Req() request: Request,  
+               @Body('jwt') jwt: string,) {
         try {
-            const cookie = request.cookies['jwt'];
+
+            // const cookie = request.cookies['jwt'];
+            const cookie = jwt;
 
             const data = await this.jwtService.verifyAsync(cookie);
 
