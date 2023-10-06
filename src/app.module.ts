@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BooksModule } from './books/books.module';
+import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './user.entity';
-import {JwtModule} from "@nestjs/jwt";
+
 @Module({
   imports: [    
     // TypeOrmModule.forRoot({
@@ -27,12 +27,8 @@ import {JwtModule} from "@nestjs/jwt";
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true, // Solo para desarrollo, desactivar en producción
     }),
-    BooksModule,
-    TypeOrmModule.forFeature([User]),
-    JwtModule.register({
-      secret: 'secret',
-      signOptions: {expiresIn: '1d'}
-    })
+    AuthModule,  
+    BooksModule
   ],
   controllers: [AppController],
   providers: [AppService],

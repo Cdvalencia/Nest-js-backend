@@ -3,11 +3,21 @@ import { Controller, Get, Post, Put, Delete, Param, Body, HttpException, HttpSta
 import { BooksService } from './books.service';
 import { Books } from './books.entity';
 import { validate } from 'class-validator';
+import {
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+
+@ApiTags('books')
+@Controller('books')
 @Controller('books')
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
 
   @Get()
+  @ApiOperation({ summary: 'Get all Books' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
   findAll(): Promise<Books[]> {
     return this.booksService.findAll();
   }
@@ -16,7 +26,7 @@ export class BooksController {
   findOne(@Param('id') id: number): Promise<Books> {
     return this.booksService.findOne(id);
   } 
-
+  
   @Post()
   async create(
     @Body() bookData: Books    
