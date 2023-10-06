@@ -7,10 +7,10 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.use(cookieParser());
-  // app.enableCors({
-  //   origin: 'http://localhost:3001',
-  //   credentials: true
-  // })
+  app.enableCors({
+    origin: 'https://main.d1j29lgo6wvoj3.amplifyapp.com',
+    credentials: true
+  })
 
   const options = new DocumentBuilder()
     .setTitle('API de libros')    
