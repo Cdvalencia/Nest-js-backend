@@ -61,7 +61,7 @@ export class AuthController {
         };
     }
 
-    @Get('user')
+    @Post('user')
     async user(@Req() request: Request,  
                @Body('jwt') jwt: string,) {
         try {
