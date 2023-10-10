@@ -9,6 +9,7 @@ async function bootstrap() {
   app.use(cookieParser());
   app.enableCors({
     origin: 'https://main.d1j29lgo6wvoj3.amplifyapp.com',
+    // origin: 'http://localhost:3001',
     credentials: true
   })
 
